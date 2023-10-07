@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import axios from 'axios';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart,signInFailure,signInSuccess } from '../redux/user/userSlice';
 export default function SignIn() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+ const {loading} = useSelector((state)=>state.user)
   const navigate = useNavigate();
+  const dispatch=useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,7 +23,7 @@ export default function SignIn() {
     e.preventDefault();
   
     try {
-      setLoading(true);
+      dispatch(signInStart())
       const response = await axios.post(
         `${API_BASE_URL}/api/auth/signin`,
         formData,
@@ -33,17 +34,17 @@ export default function SignIn() {
         }
       );
       const data = response.data;
-      setLoading(false);
+    
   
       if (data.success === false) {
         const errorMessage = data.message || 'An unexpected error occurred.';
         window.alert(errorMessage);
         return;
       }
-  
+  dispatch(signInSuccess(data));
       navigate('/');
     } catch (error) {
-      setLoading(false);
+     dispatch(signInFailure(error.message))
   
       if (error.response && error.response.status === 404) {
         window.alert('User not found'); 
