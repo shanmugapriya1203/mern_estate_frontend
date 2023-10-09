@@ -4,6 +4,8 @@ import { API_BASE_URL } from '../config';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart,signInFailure,signInSuccess } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
+
 export default function SignIn() {
   const [formData, setFormData] = useState({
     email: '',
@@ -87,6 +89,7 @@ export default function SignIn() {
           >
             {loading ? 'Loading...' : 'Sign In'}
           </button>
+          <OAuth/>
         </form>
 
         <div className="mt-5 text-center">
