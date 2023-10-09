@@ -19,8 +19,7 @@ export default function Profile() {
           id='username'
           placeholder='Username'
           className='border p-3 rounded-lg'
-          value={formData.username}
-          onChange={handleChange}
+        
         />
         <label htmlFor='email'>Email</label>
         <input
@@ -28,8 +27,7 @@ export default function Profile() {
           id='email'
           placeholder='Email'
           className='border p-3 rounded-lg'
-          value={formData.email}
-          onChange={handleChange}
+         
         />
         <label htmlFor='password'>Password</label>
         <input
@@ -37,15 +35,13 @@ export default function Profile() {
           id='password'
           placeholder='Password'
           className='border p-3 rounded-lg'
-          value={formData.password}
-          onChange={handleChange}
+       
         />
 
         <button
           type='submit'
           className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95'
-          disabled={!formData.username || !formData.email}
-        >
+         >
           UPDATE
         </button>
       </form>
