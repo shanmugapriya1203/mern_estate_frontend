@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRef } from 'react';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase';
-
+import { updateUserStart,updateUserSuccess,updateUserFailure } from '../redux/user/userSlice';
+import axios from 'axios';
+import { API_BASE_URL } from '../config';
 export default function Profile() {
+  const dispatch=useDispatch()
   const { currentUser } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
-  console.log(filePerc)
-  console.log(formData)
-  console.log(file)
+ const[updateSuccess,setUpdateSuccess]=useState(false)
   
   useEffect(() => {
     if (file) {
@@ -22,15 +23,9 @@ export default function Profile() {
   }, [file]);
 
   const handleFileUpload = (file) => {
-    if (!file || !file.name) {
- 
-      console.error("Invalid file object");
-      return;
-    }
-
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
-    const storageRef = ref(storage, fileName)
+    const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -41,23 +36,50 @@ export default function Profile() {
         setFilePerc(Math.round(progress));
       },
       (error) => {
-     
-        console.error("Upload error:", error);
         setFileUploadError(true);
       },
       () => {
-
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
           setFormData({ ...formData, avatar: downloadURL })
         );
       }
     );
   };
+  const handleChange=(e)=>{
+setFormData({...formData,[e.target.id]:e.target.value})
+  }
+  const handleSubmit= async (e)=>{
+    e.preventDefault()
+    try {
+      dispatch(updateUserStart())
+      const response = await axios.post(
+        `${API_BASE_URL}/api/user/update/${currentUser._id}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const data = response.data;
+    if (data.success === false) {
+        const errorMessage = data.message || 'An unexpected error occurred.';
+        window.alert(errorMessage);
+        return;
+      }
+  dispatch(updateUserSuccess(data));
+  setUpdateSuccess(true)
+  
+    } catch (error) {
+      dispatch(updateUserFailure(error.message))
+  
+    }
+  }
 
   return (
     <main className='p-3 max-w-md mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form className='flex flex-col gap-4'>
+      <form onSubmit= {handleSubmit} className='flex flex-col gap-4'>
         <input
           type='file'
           ref={fileRef}
@@ -88,6 +110,8 @@ export default function Profile() {
 
         <label htmlFor='username'>Username</label>
         <input
+        defaultValue={currentUser.username}
+        onChange={handleChange}
           type='text'
           id='username'
           placeholder='Username'
@@ -95,6 +119,8 @@ export default function Profile() {
         />
         <label htmlFor='email'>Email</label>
         <input
+        defaultValue={currentUser.email}
+        onChange={handleChange}
           type='email'
           id='email'
           placeholder='Email'
@@ -103,6 +129,7 @@ export default function Profile() {
         <label htmlFor='password'>Password</label>
         <input
           type='password'
+          onChange={handleChange}
           id='password'
           placeholder='Password'
           className='border p-3 rounded-lg'
@@ -119,6 +146,10 @@ export default function Profile() {
         <span className='text-red-700 cursor-pointer'>Delete an account</span>
         <span className='text-red-700 cursor-pointer'>Sign Out</span>
       </div>
+   
+      <p className='text-green-700 mt-5'>
+        {updateSuccess ? 'User is updated successfully!' : ''}
+      </p>
     </main>
   );
 }
