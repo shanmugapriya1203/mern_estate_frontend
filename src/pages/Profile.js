@@ -8,6 +8,7 @@ import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart,
 ,signOutUserStart,signOutUserSuccess,signOutUserFailure } from '../redux/user/userSlice';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -127,79 +128,96 @@ export default function Profile() {
   };
   
   return (
-    <main className='p-3 max-w-md mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input
-          type='file'
-          ref={fileRef}
-          hidden
-          accept='images/*'
-          onChange={(e) => setFile(e.target.files[0])}
-        />
-
-        <img
-          src={formData.avatar || (currentUser?.avatar || '')}
-          alt='Profile'
-          className='rounded-full h-16 w-16 object-cover cursor-pointer self-center mt-1'
-          onClick={() => fileRef.current.click()}
-        />
-        <p className='text-sm self-center'>
-          {fileUploadError ? (
-            <span className='text-red-700'>
-              Error Image upload (image must be less than 2 mb)
-            </span>
-          ) : filePerc > 0 && filePerc < 100 ? (
-            <span className='text-slate-700'>{`Uploading ${filePerc}%`}</span>
-          ) : filePerc === 100 ? (
-            <span className='text-green-700'>Image successfully uploaded!</span>
-          ) : (
-            ''
-          )}
-        </p>
-
-        <label htmlFor='username'>Username</label>
-        <input
-          defaultValue={currentUser?.username || ''}
-          onChange={handleChange}
-          type='text'
-          id='username'
-          placeholder='Username'
-          className='border p-3 rounded-lg'
-        />
-        <label htmlFor='email'>Email</label>
-        <input
-          defaultValue={currentUser?.email || ''}
-          onChange={handleChange}
-          type='email'
-          id='email'
-          placeholder='Email'
-          className='border p-3 rounded-lg'
-        />
-        <label htmlFor='password'>Password</label>
-        <input
-          type='password'
-          onChange={handleChange}
-          id='password'
-          placeholder='Password'
-          className='border p-3 rounded-lg'
-        />
-
-        <button
-          type='submit'
-          className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95'
-        >
-          UPDATE
-        </button>
-      </form>
-      <div className='flex justify-between mt-4'>
-        <span className='text-red-700 cursor-pointer' onClick={handleDeleteUser}>Delete an account</span>
-        <span className='text-red-700 cursor-pointer' onClick={handleSignOut}>Sign Out</span>
-      </div>
-
-      <p className='text-green-700 mt-5'>
-        {updateSuccess ? 'User is updated successfully!' : ''}
+    <main className='p-4 max-w-md mx-auto'>
+    <h1 className='text-4xl font-bold text-center my-6 text-gray-500'>Profile Settings</h1>
+    <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+      <input
+        type='file'
+        ref={fileRef}
+        hidden
+        accept='images/*'
+        onChange={(e) => setFile(e.target.files[0])}
+      />
+  
+      <img
+        src={formData.avatar || (currentUser?.avatar || '')}
+        alt='Profile'
+        className='rounded-full h-20 w-20 object-cover cursor-pointer self-center mt-2'
+        onClick={() => fileRef.current.click()}
+      />
+      <p className='text-sm self-center'>
+        {fileUploadError ? (
+          <span className='text-red-600'>
+            Error: Image upload failed (image must be less than 2 MB)
+          </span>
+        ) : filePerc > 0 && filePerc < 100 ? (
+          <span className='text-gray-500'>{`Uploading ${filePerc}%`}</span>
+        ) : filePerc === 100 ? (
+          <span className='text-green-600'>Image successfully uploaded!</span>
+        ) : (
+          ''
+        )}
       </p>
-    </main>
+  
+      <label htmlFor='username' className='text-lg font-semibold text-gray-500'>Username</label>
+      <input
+        defaultValue={currentUser?.username || ''}
+        onChange={handleChange}
+        type='text'
+        id='username'
+        placeholder='Username'
+        className='border p-3 rounded-lg'
+      />
+      <label htmlFor='email' className='text-lg font-semibold text-gray-500'>Email</label>
+      <input
+        defaultValue={currentUser?.email || ''}
+        onChange={handleChange}
+        type='email'
+        id='email'
+        placeholder='Email'
+        className='border p-3 rounded-lg'
+      />
+      <label htmlFor='password' className='text-lg font-semibold text-gray-500'>New Password</label>
+      <input
+        type='password'
+        onChange={handleChange}
+        id='password'
+        placeholder='New Password'
+        className='border p-3 rounded-lg'
+      />
+  
+      <button
+        type='submit'
+        className='bg-gray-500 text-white rounded-lg p-3 uppercase hover:bg-gray-600 hover:opacity-90'
+      >
+        UPDATE
+      </button>
+      <Link to={"/create-listing"} className='bg-green-600 text-white rounded-lg p-3 uppercase hover:bg-green-700 hover:opacity-90 text-center'>Create Listing</Link>
+    </form>
+    <div className='flex justify-between mt-4'>
+      <button
+        type='button'
+        className='text-red-600 border border-red-600 rounded-lg p-2 hover:bg-red-600 hover:text-white'
+        onClick={handleDeleteUser}
+      >
+        Delete My Account
+      </button>
+      <button
+        type='button'
+        className='text-red-600 border border-red-600 rounded-lg p-2 hover:bg-red-600 hover:text-white'
+        onClick={handleSignOut}
+      >
+        Sign Out
+      </button>
+    </div>
+  
+    <p className='text-green-600 mt-5'>
+      {updateSuccess ? 'Profile successfully updated!' : ''}
+    </p>
+  </main>
+  
+  
+  
+  
   );
 }
