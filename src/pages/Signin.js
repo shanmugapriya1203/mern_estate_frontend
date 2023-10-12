@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { API_BASE_URL } from '../config';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { signInStart,signInFailure,signInSuccess } from '../redux/user/userSlice';
+import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice';
+import Cookies from 'js-cookie'; // Import the js-cookie library
+
 import OAuth from '../components/OAuth';
 
 export default function SignIn() {
@@ -11,9 +13,9 @@ export default function SignIn() {
     email: '',
     password: '',
   });
- const {loading} = useSelector((state)=>state.user)
+  const { loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -21,11 +23,12 @@ export default function SignIn() {
       [e.target.id]: e.target.value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      dispatch(signInStart())
+      dispatch(signInStart());
       const response = await axios.post(
         `${API_BASE_URL}/api/auth/signin`,
         formData,
@@ -36,28 +39,33 @@ export default function SignIn() {
         }
       );
       const data = response.data;
-    
-  
+
       if (data.success === false) {
         const errorMessage = data.message || 'An unexpected error occurred.';
         window.alert(errorMessage);
         return;
       }
-  dispatch(signInSuccess(data));
+
+      dispatch(signInSuccess(data));
+
+      // Set the "access_token" cookie with the token received in the response
+      Cookies.set('access_token', data.token, { expires: 7 }); // Expires in 7 days
+
       navigate('/');
     } catch (error) {
-     dispatch(signInFailure(error.message))
-  
+      dispatch(signInFailure(error.message));
+
       if (error.response && error.response.status === 404) {
-        window.alert('User not found'); 
+        window.alert('User not found');
       } else if (error.response && error.response.status === 401) {
-        window.alert('Invalid credentials'); 
+        window.alert('Invalid credentials');
       } else {
-        window.alert('An unexpected error occurred. Please try again later.'); 
+        window.alert('An unexpected error occurred. Please try again later.');
       }
     }
-  };
-  
+  }
+
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

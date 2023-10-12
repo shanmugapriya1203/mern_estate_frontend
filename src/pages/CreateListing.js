@@ -29,17 +29,22 @@ const CreateListing = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
+
+
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.images.length < 7) {
       setUploading(true);
       setImageUploadError(false);
       const promises = [];
+  
       for (let i = 0; i < files.length; i++) {
         promises.push(storeImage(files[i]));
       }
+  
       Promise.all(promises)
         .then((urls) => {
-          setFormData({ ...formData, images: formData.images.concat(urls) });
+          // Update the formData.images array with the resolved URLs
+          setFormData({ ...formData, images: [...formData.images, ...urls] });
           setImageUploadError(false);
           setUploading(false);
         })
@@ -52,6 +57,7 @@ const CreateListing = () => {
       setUploading(false);
     }
   };
+  
 
   const storeImage = async (file) => {
     return new Promise((resolve, reject) => {
