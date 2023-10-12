@@ -147,6 +147,34 @@ export default function Profile() {
       setShowListingError(true)
     }
   }
+
+  const handleListingDelete = async (listingId) => {
+  
+    const userConfirmed = window.confirm("Are you sure you want to delete this listing?");
+  
+    if (!userConfirmed) {
+    
+      return;
+    }
+  
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/listing/delete/${listingId}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+  
+      setUserListing((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  
   
   return (
     <main className='p-4 max-w-md mx-auto'>
@@ -241,19 +269,20 @@ export default function Profile() {
   <div className='flex flex-col gap-4'>
     <h1 className='text-center mt-7 text-2xl'>Your Listing</h1>
     {getUserListing.map((listing) => (
-      <div className='border rounded-lg p-3 flex justify-between items-center gap-4' key={listing._id}>
-        <Link to={`/listing/${listing._id}`}>
-          <img src={listing.images[0]} alt='listing cover' className='h-16 w-16 object-contain' />
-        </Link>
-        <Link className='flex-1 text-slate-700 font-semibold hover:underline truncate' to={`/listing/${listing._id}`}>
-          <p className=''>{listing.name}</p>
-        </Link>
-        <div className='flex flex-col items-center'>
-          <button className='text-red-700 uppercase'>Delete</button>
-          <button className='text-green-700 uppercase'>Edit</button>
-        </div>
-      </div>
-    ))}
+  <div className='border rounded-lg p-3 flex justify-between items-center gap-4' key={listing._id}>
+    <Link to={`/listing/${listing._id}`}>
+      <img src={listing.images[0]} alt='listing cover' className='h-16 w-16 object-contain' />
+    </Link>
+    <Link className='flex-1 text-slate-700 font-semibold hover:underline truncate' to={`/listing/${listing._id}`}>
+      <p className=''>{listing.name}</p>
+    </Link>
+    <div className='flex flex-col items-center'>
+      <button  onClick={() => handleListingDelete(listing._id)} className='text-red-700 uppercase'>Delete</button>
+      <button className='text-green-700 uppercase'>Edit</button>
+    </div>
+  </div>
+))}
+
   </div>
 )}
 
