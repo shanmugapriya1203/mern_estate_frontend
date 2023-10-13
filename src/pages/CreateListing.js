@@ -43,13 +43,14 @@ const CreateListing = () => {
   
       Promise.all(promises)
         .then((urls) => {
-          // Update the formData.images array with the resolved URLs
+       
           setFormData({ ...formData, images: [...formData.images, ...urls] });
           setImageUploadError(false);
           setUploading(false);
         })
         .catch((err) => {
-          setImageUploadError('Image upload failed (2mb per image)');
+      
+          setImageUploadError('Image upload failed');
           setUploading(false);
         });
     } else {

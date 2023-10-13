@@ -68,21 +68,22 @@ export default function Listing() {
         listing && !loading && !error &&
        (
         <div>
-        <Swiper navigation>
-          {listing.images.map((url) => (
-            <SwiperSlide key={url}>
-              <div
-                className='h-[550px] mx-20 my-5'
-                style={{
-                  background: `url(${url}) center no-repeat`,
-                  backgroundSize: 'cover',  // You can control the background size here
-                  maxWidth: '100%',  // Set the maximum width
-                  maxHeight: '400px', // Set the maximum height
-                }}
-              ></div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+       <Swiper navigation>
+  {listing.images.map((url) => (
+    <SwiperSlide key={url}>
+      <div
+        className='mx-20 my-5'
+        style={{
+          background: `url(${url}) center no-repeat`,
+          backgroundSize: 'cover',
+          width: '100%',
+          height: '100vh', 
+        }}
+      ></div>
+    </SwiperSlide>
+  ))}
+</Swiper>
+
         <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'>
             <FaShare
               className='text-slate-500'
