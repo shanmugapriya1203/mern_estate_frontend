@@ -58,7 +58,7 @@ export default function Header() {
               About
             </li>
           </Link>
-          <Link to='/profile'>
+          <Link to='/sign-in'>
             {currentUser ? (
               <>
               <img
