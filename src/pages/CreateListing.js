@@ -158,7 +158,7 @@ const CreateListing = () => {
             placeholder='Name'
             id='name'
             className='border p-3 rounded-lg'
-            maxLength='15'
+            maxLength='20'
             minLength='3'
             required
             onChange={handleChange}

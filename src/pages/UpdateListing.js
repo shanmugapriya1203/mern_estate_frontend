@@ -164,7 +164,7 @@ fetchListing()
 
   return (
     <main className='p-4 max-w-4xl mx-auto'>
-      <h1 className='text-4xl font-bold text-center my-6 text-gray-500'>Update Listing</h1>
+      <h1 className='text-4xl font-bold text-center my-6 text-gray-500'>Update Property</h1>
       <form className='flex flex-col sm:flex-row gap-4' onSubmit={handleSubmit}>
         <div className='flex flex-col gap-4 flex-1'>
           <input
@@ -172,7 +172,7 @@ fetchListing()
             placeholder='Name'
             id='name'
             className='border p-3 rounded-lg'
-            maxLength='15'
+            maxLength='20'
             minLength='3'
             required
             onChange={handleChange}
@@ -350,7 +350,7 @@ fetchListing()
               </div>
             ))}
           <button disabled ={loading || uploading}className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
-            {loading ? "Updating" : 'Update Listing'}
+            {loading ? "Updating" : 'Update Details'}
           </button>
           {error && <p className='text-red-700 text-sm '>{error}</p>}
         </div>

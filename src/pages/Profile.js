@@ -241,7 +241,7 @@ export default function Profile() {
       >
         UPDATE
       </button>
-      <Link to={"/create-listing"} className='bg-green-600 text-white rounded-lg p-3 uppercase hover:bg-green-700 hover:opacity-90 text-center'>Create Listing</Link>
+      <Link to={"/create-listing"} className='bg-green-600 text-white rounded-lg p-3 uppercase hover:bg-green-700 hover:opacity-90 text-center'>Add Property</Link>
     </form>
     <div className='flex justify-between mt-4'>
       <button
@@ -263,11 +263,11 @@ export default function Profile() {
     <p className='text-green-600 mt-5'>
       {updateSuccess ? 'Profile successfully updated!' : ''}
     </p>
-    <button onClick={handleShowListing} className='text-green-700 w-full'>Show My Listings</button>
+    <button onClick={handleShowListing} className='text-green-700 w-full'>Show My Property</button>
     <p className='text-red-700 mt-5'>{showListingError ? "Error Showing listings" :""}</p>
     {getUserListing && getUserListing.length > 0 && (
   <div className='flex flex-col gap-4'>
-    <h1 className='text-center mt-7 text-2xl'>Your Listing</h1>
+    <h1 className='text-center mt-7 text-2xl'>My Properties</h1>
     {getUserListing.map((listing) => (
   <div className='border rounded-lg p-3 flex justify-between items-center gap-4' key={listing._id}>
     <Link to={`/listing/${listing._id}`}>
