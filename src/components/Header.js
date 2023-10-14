@@ -58,7 +58,7 @@ export default function Header() {
               About
             </li>
           </Link>
-          <Link to='/sign-in'>
+          <Link to='/profile'>
             {currentUser ? (
               <>
               <img
@@ -69,7 +69,9 @@ export default function Header() {
                  <span className='text-slate-700 ml-2 uppercase font-extrabold'>{currentUser.username}</span>
               </>
             ) : (
+              <Link to='/sign-in'>
               <li className='rounded-md bg-slate-500 text-white px-4 py-2 hover:bg-slate-700'> Sign in</li>
+              </Link>
             )}
           </Link>
         </ul>
