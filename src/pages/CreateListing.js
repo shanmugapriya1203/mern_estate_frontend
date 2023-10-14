@@ -150,7 +150,7 @@ const CreateListing = () => {
 
   return (
     <main className='p-4 max-w-4xl mx-auto'>
-      <h1 className='text-4xl font-bold text-center my-6 text-gray-500'>Create Listing</h1>
+      <h1 className='text-4xl font-bold text-center my-6 text-gray-500'>Add My Space</h1>
       <form className='flex flex-col sm:flex-row gap-4' onSubmit={handleSubmit}>
         <div className='flex flex-col gap-4 flex-1'>
           <input
@@ -336,7 +336,7 @@ const CreateListing = () => {
               </div>
             ))}
           <button disabled ={loading || uploading}className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
-            {loading ? 'Creating' : 'Create Listing'}
+            {loading ? 'Creating' : 'Create My property'}
           </button>
           {error && <p className='text-red-700 text-sm '>{error}</p>}
         </div>

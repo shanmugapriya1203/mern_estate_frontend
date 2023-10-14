@@ -17,7 +17,7 @@ export default function Home() {
 useEffect(()=>{
   const fetchofferListings=async()=>{
     try {
-      const res= await fetch(`${API_BASE_URL}/api/listing/get?offer=true&limit=4`)
+      const res= await fetch(`${API_BASE_URL}/api/listing/get?offer=true&limit=6`)
       const data= await res.json()
       setOfferListings(data)
       fetchRentListing()
@@ -29,7 +29,7 @@ useEffect(()=>{
   }
   const  fetchRentListing= async()=>{
     try {
-      const res = await fetch(`${API_BASE_URL}/api/listing/get?type=rent&limit=4`);
+      const res = await fetch(`${API_BASE_URL}/api/listing/get?type=rent&limit=6`);
       const data = await res.json();
       setRentListings(data);
       fetchSaleListings();
