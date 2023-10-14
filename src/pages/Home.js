@@ -44,7 +44,7 @@ useEffect(()=>{
       const data = await res.json();
       setSaleListings(data);
     } catch (error) {
-      log(error);
+      console.log(error);
     }
   };
   fetchofferListings()
