@@ -6,7 +6,7 @@ import axios from 'axios';
 import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice';
 import Cookies from 'js-cookie'; // Import the js-cookie library
 
-import OAuth from '../components/OAuth';
+//import OAuth from '../components/OAuth';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -97,7 +97,7 @@ export default function SignIn() {
           >
             {loading ? 'Loading...' : 'Sign In'}
           </button>
-          <OAuth/>
+       
         </form>
 
         <div className="mt-5 text-center">
