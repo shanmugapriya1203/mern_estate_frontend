@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link ,useNavigate} from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import axios from 'axios';
-import OAuth from '../components/OAuth';
+//import OAuth from '../components/OAuth';
 export default function SignUp() {
   const [formData, setFormData] = useState({
     username: '',
@@ -91,7 +91,7 @@ export default function SignUp() {
         >
           {loading ? 'Loading...' : 'Sign Up'}
         </button>
-        <OAuth/>
+        //<OAuth/>
         </form>
 
         <div className="mt-5 text-center">
